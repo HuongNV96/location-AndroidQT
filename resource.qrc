@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/App">
+        <file>Main.qml</file>
+        <file>PermissonsView.qml</file>
+        <file>LocationView.qml</file>
+    </qresource>
+</RCC>
