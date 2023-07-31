@@ -16,6 +16,7 @@ qt_add_executable(applocationTest
     resource.qrc
     PermissionManager.h PermissionManager.cpp SingletonTemplate.hpp
     LocationPresenter.h LocationPresenter.cpp
+    LocationManager.h LocationManager.cpp
 )
 
 

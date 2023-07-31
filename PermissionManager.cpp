@@ -11,8 +11,6 @@ void PermissionManager::openSettingDetails() {
                                                                "ACTION_APPLICATION_DETAILS_SETTINGS");
     QJniObject javaMessage = QJniObject::fromString("package:com.qtproject.location");
     auto uri = QJniObject::callStaticMethod<jobject>(env.findClass("android/net/Uri"), "parse", "(Ljava/lang/String;)Landroid/net/Uri;", javaMessage.object<jstring>());
-    //auto test = uri.callObjectMethod("toString", "()Ljava/lang/String;");
-    //qDebug() << "DKM vvvdhdhdhdhdh " << ACTION_SETTINGS.toString() << "   " << test.toString();
     QJniObject intent(env.findClass("android/content/Intent"),
                       "(Ljava/lang/String;Landroid/net/Uri;)V",
                       ACTION_SETTINGS.object() , uri.object());
@@ -28,14 +26,19 @@ void PermissionManager::onApplicationStateChanged(Qt::ApplicationState state) {
 void PermissionManager::onCurrentPermissionStatus() {
     qint64 stopPoint = QDateTime::currentMSecsSinceEpoch();
     if (stopPoint - startPoint < 1000) {
-        openSettingDetails();
+        if (forceMode) {
+            openSettingDetails();
+        } else {
+            emit currentPermissonStatus(qApp->checkPermission(mPermissions.value(currentPermisson)) == Qt::PermissionStatus::Granted);
+        }
     } else {
         emit currentPermissonStatus(qApp->checkPermission(mPermissions.value(currentPermisson)) == Qt::PermissionStatus::Granted);
     }
 }
 
-void PermissionManager::checkPermisson(QString permisson) {
+void PermissionManager::checkPermisson(QString permisson, bool force) {
     currentPermisson = permisson;
+    forceMode = force;
     if (qApp->checkPermission(mPermissions.value(permisson)) != Qt::PermissionStatus::Granted) {
         startPoint = QDateTime::currentMSecsSinceEpoch();
         qApp->requestPermission(mPermissions.value(permisson), this, &PermissionManager::onCurrentPermissionStatus);

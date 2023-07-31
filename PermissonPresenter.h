@@ -14,7 +14,7 @@ public :
     Q_SIGNAL void applicationActived();
     Q_SLOT void onApplicationActived() { emit applicationActived(); }
 
-    Q_INVOKABLE void checkPermisson(QString permisson);
+    Q_INVOKABLE void checkPermisson(QString permisson, bool force);
     Q_INVOKABLE QList<QString> getAllPermissons();
     Q_INVOKABLE QString getPermissonsToRequest();
 };

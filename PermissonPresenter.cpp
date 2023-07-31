@@ -6,9 +6,9 @@ PermissonPresenter::PermissonPresenter() {
     connect(&manager, &PermissionManager::applicationActived, this, &PermissonPresenter::applicationActived);
 }
 
-void PermissonPresenter::checkPermisson(QString permisson) {
+void PermissonPresenter::checkPermisson(QString permisson, bool force) {
     auto & manager = SingletonTemplate<PermissionManager>::getInstance();
-    return manager.checkPermisson(permisson);
+    manager.checkPermisson(permisson, force);
 }
 
 QList<QString> PermissonPresenter::getAllPermissons() {

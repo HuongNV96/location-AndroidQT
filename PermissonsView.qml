@@ -8,24 +8,31 @@ Item {
     property var permissonPresenter: PermissonPresenter {
         onCurrentPermissonStatus: (status) => {
             if (status) {
-               checkPermissons();
+               checkPermissons(false);
             }
         }
 
         onApplicationActived: {
-           checkPermissons()
+            permissonsToRequest = permissonPresenter.getPermissonsToRequest()
+            if (permissonsToRequest !== "") {
+                preCondition.visible = true
+            } else {
+                preCondition.visible = false
+                endPermissons()
+            }
         }
     }
     Component.onCompleted: {
-        checkPermissons()
+        checkPermissons(false)
     }
 
-    function checkPermissons() {
+    function checkPermissons(force) {
         permissonsToRequest = permissonPresenter.getPermissonsToRequest()
         if (permissonsToRequest !== "") {
             preCondition.visible = true
-            permissonPresenter.checkPermisson(permissonsToRequest);
+            permissonPresenter.checkPermisson(permissonsToRequest, force);
         } else {
+            preCondition.false = true
             endPermissons()
         }
     }
@@ -52,7 +59,7 @@ Item {
                 width: parent.width
                 text: "RETRY"
                 onClicked: {
-                    permissonPresenter.checkPermisson(permissonsToRequest);
+                    checkPermissons(true);
                 }
             }
         }

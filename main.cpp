@@ -3,14 +3,18 @@
 #include "PermissonPresenter.h"
 #include "PermissionManager.h"
 #include "LocationPresenter.h"
+#include "LocationManager.h"
 
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    auto & manager = SingletonTemplate<PermissionManager>::getInstance();
-    QObject::connect(&app, &QGuiApplication::applicationStateChanged, &manager, &PermissionManager::onApplicationStateChanged);
+    auto & permissionManager = SingletonTemplate<PermissionManager>::getInstance();
+    QObject::connect(&app, &QGuiApplication::applicationStateChanged, &permissionManager, &PermissionManager::onApplicationStateChanged);
+
+    auto & locationManager = SingletonTemplate<LocationManager>::getInstance();
+    QObject::connect(&app, &QGuiApplication::applicationStateChanged, &locationManager, &LocationManager::onApplicationStateChanged);
 
     qmlRegisterType<PermissonPresenter>("App", 1, 0, "PermissonPresenter");
     qmlRegisterType<LocationPresenter>("App", 1, 0, "LocationPresenter");

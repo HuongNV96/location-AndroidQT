@@ -8,22 +8,28 @@ Window {
     visibility: Window.FullScreen
     title: qsTr("hello world")
 
-    PermissonsView {
-        id : permissonsView
-    }
-
-    LocationView {
-        id : locationView
-    }
-
-    Connections {
-        target: permissonsView
-        onEndPermissons : {
-            console.log('gjgjgjgj')
-            permissonsView.destroy()
-
+    Component {
+        id : locationComponent
+        LocationView {
+            onGpsAvailble : {
+            }
+            onCancelCheckGps : {
+            }
         }
     }
 
+    Component {
+        id : permissonComponent
+        PermissonsView {
+            onEndPermissons : {
+                mainStack.push(locationComponent)
+            }
+        }
+    }
 
+    StackView {
+        id: mainStack
+        anchors.fill: parent
+        initialItem: permissonComponent
+    }
 }

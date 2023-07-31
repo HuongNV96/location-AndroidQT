@@ -14,13 +14,14 @@ public:
     Q_SLOT void onApplicationStateChanged(Qt::ApplicationState state);
     Q_SIGNAL void currentPermissonStatus(bool status);
     Q_SIGNAL void applicationActived();
-    void checkPermisson(QString permisson);
+    void checkPermisson(QString permisson, bool force);
     QList<QString> getAllPermissons();
     QString getPermissonsToRequest();
 private :
     QMap<QString, QPermission> mPermissions {{"location permisson", QLocationPermission() },
                                             {"microphone permisson", QMicrophonePermission()}};
     QString currentPermisson;
+    bool forceMode;
 
     void openSettingDetails();
     void onCurrentPermissionStatus();
